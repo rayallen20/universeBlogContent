@@ -1,0 +1,43 @@
+/* 每一层的children相对上一层向右移动21px */
+.tree ul {
+    padding-left: 21px;
+}
+
+/* 每个节点的第1行 展示name的那一行 */
+.node > .row {
+    padding: 6px 0;
+    line-height: 20px;
+    user-select: none;
+}
+
+.node_folder > .row {
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.node_file > .row {
+    font-weight: 400;
+}
+
+.node_folder > ul {
+    overflow: hidden;
+    /* 展开后的高度为auto 即随内容变化 */
+    height: auto;
+}
+
+.node_folder.animating > ul {
+    transition: height 0.3s ease;
+    pointer-events: none;
+}
+
+.node_folder.isCollapsed > ul {
+    height: 0;
+}
+
+/* 若客户端开启动画减弱 则不做过渡动画 */
+@media (prefers-reduced-motion: reduce) {
+    .node_folder > ul,
+    .node_folder.animating > ul {
+        transition: none !important;
+    }
+}
