@@ -5,18 +5,116 @@
 
 /* 每个节点的第1行 展示name的那一行 */
 .node > .row {
-    padding: 6px 0;
-    line-height: 20px;
+    padding: 12px 0;
+    /*line-height: 20px;*/
     user-select: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.node_folder > .row {
-    cursor: pointer;
-    font-weight: 600;
+/*
+case1. depth = 0时的node
+    node对应的row: 梯形 + 24px加粗文字
+*/
+.primaryRow {
+    display: flex;
+    column-gap: 10px;
 }
 
-.node_file > .row {
-    font-weight: 400;
+.primaryRow .leftTrapezoid {
+    width: 6px;
+    height: 24px;
+    background: #20c6d8;
+    clip-path: polygon(
+        0px 0px,
+        6px 5px,
+        6px 19px,
+        0px 24px
+    );
+}
+
+.primaryRow .literal {
+    color: #FFF;
+    font-family: "Source Han Serif CN", serif;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px;
+    letter-spacing: 1px;
+}
+
+/*
+case2. depth > 0时的node
+    case2.1 node.type === folder
+        node对应的row: 有状态的箭头
+*/
+.node_folder > .folderRow {
+    display: flex;
+    align-items: center;
+    column-gap: 8px;
+}
+
+.node_folder > .folderRow .icon-right {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 14px;
+    height: 14px;
+    font-size: 14px;
+    color: #20c6d8;
+    border: 1px solid #20c6d8;
+    border-radius: 1px;
+
+    /* 箭头旋转动效 */
+    /* Tips: 注意旋转动效的持续时长和展开/折叠动效的持续时长一致 */
+    transition: transform 0.3s ease;
+    transform-origin: 50% 50%;
+}
+
+/* 展开态(折叠 -> 展开) */
+.node_folder:not(.isCollapsed) > .folderRow .icon-right {
+    transform: rotate(90deg);
+}
+
+/* 折叠态(展开 -> 折叠) */
+.node_folder.isCollapsed > .folderRow .icon-right {
+    transform: rotate(0deg);
+}
+
+/* folder和file中的文字样式都是一样的 */
+.node_folder > .folderRow .literal,
+.node_file > .fileRow .literal {
+    overflow: hidden;
+    color: #FFFFFF;
+    text-overflow: ellipsis;
+    font-family: "Source Han Serif CN", serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 18px;
+    letter-spacing: 1px;
+}
+
+/*
+case2. depth > 0时的node
+	case2.2 node.type === file
+		node对应的row: 文件图标
+*/
+.node_file > .fileRow {
+    display: flex;
+    align-items: center;
+    column-gap: 8px;
+}
+
+.node_file > .fileRow .icon-file {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 14px;
+    height: 14px;
+    font-size: 14px;
+    color: #20c6d8;
 }
 
 .node_folder > ul {

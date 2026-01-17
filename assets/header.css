@@ -1,0 +1,60 @@
+.header {
+    flex: 0 0 100px;
+    display: flex;
+    /* TODO: 这个缝隙宽度是我看设计稿上2个文字之间的间距的 */
+    column-gap: 54px;
+    border-bottom: 2px solid #21AAFF;
+    background: rgba(0, 0, 0, 0.40);
+}
+
+.header a {
+    display: flex;
+    align-items: center;
+    padding-left: 30px;
+    height: 100%;
+    position: relative;
+    background: transparent;
+    transition: all 0.4s;
+}
+
+.header a::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(90deg, rgba(44, 251, 255, 0.10) 0%, rgba(44, 251, 255, 0.00) 100%);
+    opacity: 0.33333;
+    transition: opacity 0.5s ease;
+}
+
+.header a:hover::before {
+    opacity: 1;
+}
+
+.header a span {
+    color: #2CFBFF;
+}
+
+.header a .icon-left {
+    font-size: 18px;
+}
+
+.header a .content {
+    font-family: "PingFang SC", serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: 1px;
+}
+
+.header h2 {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    color: #FFFFFF;
+    font-family: "Source Han Serif CN", serif;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 900;
+    letter-spacing: 2px;
+}

@@ -1,5 +1,8 @@
 import '../assets/reset.css'
+import '../assets/font.css'
+import '../assets/iconfont/iconfont.css'
 import '../assets/index.css'
+import '../assets/header.css'
 import '../assets/tree.css'
 
 const tree = [
@@ -71,6 +74,65 @@ const tree = [
 ]
 
 /**
+ * @type {string} STORAGE_KEY 用于存储折叠文件夹ID集合的本地存储键名
+ * */
+const STORAGE_KEY = 'tree_folder_collapsed_ids'
+
+/**
+ * @type {Set<number>} collapsedIdSet 用于存储折叠文件夹ID的集合
+ * */
+const collapsedIdSet = new Set(loadCollapsedIds())
+
+/**
+ * 本函数用于读取本地存储中的折叠文件夹ID集合
+ * @returns {Array<number>} - 折叠文件夹ID数组
+ * */
+function loadCollapsedIds() {
+    try {
+        const raw = localStorage.getItem(STORAGE_KEY)
+        if (raw === null) {
+            return []
+        }
+
+        const idCollection = JSON.parse(raw)
+        if (!Array.isArray(idCollection)) {
+            return []
+        }
+
+        return idCollection
+    } catch {
+        return []
+    }
+}
+
+/**
+ * 本函数用于将折叠文件夹ID集合保存到本地存储中
+ * */
+function saveCollapsedIds() {
+    const idCollection = Array.from(collapsedIdSet)
+    const raw = JSON.stringify(idCollection)
+    localStorage.setItem(STORAGE_KEY, raw)
+}
+
+/**
+ * 本函数用于根据节点ID和深度判断节点是否应在加载后折叠
+ * 规则:
+ *      - 若节点ID存在于collapsedIdSet中,则折叠
+ *          - 也就是说,如果collapsedIdSet中不存在给定的节点ID,则说明该节点应展开
+ *      - 默认: depth >= 1 的folder节点折叠
+ * @param {number} nodeId - 节点ID
+ * @param {number} depth - 节点深度
+ * @returns {boolean} - 是否应折叠
+ * */
+function isInitiallyCollapsed(nodeId, depth) {
+    if (collapsedIdSet.has(nodeId)) {
+        return true
+    }
+
+    return depth >= 1
+}
+
+/**
  * 本函数用于将树形数据渲染为嵌套的HTML列表结构
  * @param {Array} nodes - 树形数据节点数组
  * @param {boolean} isRoot - 是否为根节点
@@ -82,14 +144,7 @@ function renderTree(nodes, isRoot = false, depth = 0) {
     ulElement.className = isRoot ? 'tree' : 'children'
 
     for (const node of nodes) {
-        const liElement = document.createElement('li')
-        liElement.className = `node node_${node.type}`
-
-        // 当前行
-        const rowElement = document.createElement('div')
-        rowElement.className = 'row'
-        rowElement.textContent = node.name
-        liElement.appendChild(rowElement)
+        const liElement = createLiElement(node, depth)
 
         const hasChildren = node.type === 'folder' && Array.isArray(node.children) && node.children.length > 0
         if (!hasChildren) {
@@ -97,14 +152,12 @@ function renderTree(nodes, isRoot = false, depth = 0) {
             continue
         }
 
-        // 处理文件夹节点
-        // 子文件夹默认折叠
-        if (depth >= 1) {
+        // 根据规则判断是否折叠
+        if (isInitiallyCollapsed(node.id, depth)) {
             liElement.classList.add('isCollapsed')
         }
 
         depth += 1
-
         const childrenElement = renderTree(node.children, false, depth)
         liElement.appendChild(childrenElement)
 
@@ -112,6 +165,80 @@ function renderTree(nodes, isRoot = false, depth = 0) {
     }
 
     return ulElement
+}
+
+/**
+ * 本函数用于创建表示树中节点的li元素并设置其样式
+ * @param {Object} node - 树形数据节点对象
+ * @param {number} depth - 当前节点的深度
+ * @returns {HTMLLIElement} - 创建的li元素
+ * */
+function createLiElement(node, depth) {
+    const liElement = document.createElement('li')
+    liElement.className = `node node_${node.type}`
+    liElement.dataset.id = String(node.id)
+
+    // 当前行
+    const rowElement = document.createElement('div')
+    rowElement.className = 'row'
+
+    // 根节点对应的row添加特殊样式
+    if (depth === 0) {
+        rowElement.classList.add('primaryRow')
+
+        // 左侧小梯形
+        const leftTrapezoidElement = document.createElement('div')
+        leftTrapezoidElement.classList.add('leftTrapezoid')
+        rowElement.appendChild(leftTrapezoidElement)
+
+        // 右侧文字
+        const literalElement = document.createElement('span')
+        literalElement.classList.add('literal')
+        literalElement.textContent = node.name
+        rowElement.appendChild(literalElement)
+
+        liElement.appendChild(rowElement)
+        return liElement
+    }
+
+    // folder节点的样式
+    if (node.type === 'folder') {
+        console.log(123)
+        rowElement.classList.add('folderRow')
+
+        // 左侧箭头字体图标
+        const arrowElement = document.createElement('i')
+        arrowElement.classList.add('iconfont', 'icon-right')
+        rowElement.appendChild(arrowElement)
+
+        // 右侧文字
+        const literalElement = document.createElement('span')
+        literalElement.classList.add('literal')
+        literalElement.textContent = node.name
+        rowElement.appendChild(literalElement)
+
+        liElement.appendChild(rowElement)
+        return liElement
+    }
+
+    // file节点的样式
+    if (node.type === 'file') {
+        rowElement.classList.add('fileRow')
+
+        // 左侧文件字体图标
+        const fileIconElement = document.createElement('i')
+        fileIconElement.classList.add('iconfont', 'icon-file')
+        rowElement.appendChild(fileIconElement)
+
+        // 右侧文字
+        const literalElement = document.createElement('span')
+        literalElement.classList.add('literal')
+        literalElement.textContent = node.name
+        rowElement.appendChild(literalElement)
+    }
+
+    liElement.appendChild(rowElement)
+    return liElement
 }
 
 const mountNode = document.querySelector('.catalogue')
@@ -146,11 +273,16 @@ function toggleFolder(event) {
     const childrenElement = liElement.querySelector(':scope > ul')
     liElement.classList.add('animating')
 
+    const folderId = Number(liElement.dataset.id)
     if (isCollapsed) {
+        collapsedIdSet.delete(folderId)
+        saveCollapsedIds()
         unfoldChildren(liElement, childrenElement)
         return
     }
 
+    collapsedIdSet.add(folderId)
+    saveCollapsedIds()
     foldChildren(liElement, childrenElement)
 }
 
