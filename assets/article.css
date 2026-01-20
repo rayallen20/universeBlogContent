@@ -1,0 +1,25 @@
+.articleWrap .article {
+    width: calc(100% - 60% - 31px);
+    background: darkcyan;
+    padding: 38px;
+    color: #FFFFFF;
+    font-family: "Source Han Serif CN", serif;
+    font-style: normal;
+}
+
+.articleWrap .article .title {
+    margin-bottom: 43px;
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 40px;
+    letter-spacing: 2px;
+    background: blueviolet;
+}
+
+.articleWrap .article .content {
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 38px;
+    letter-spacing: 1px;
+    background: blue;
+}

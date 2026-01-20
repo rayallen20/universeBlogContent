@@ -17,6 +17,7 @@
     transition: all 0.4s;
 }
 
+/* Tips: 这里由于鼠标悬停时无法过渡background属性,所以使用伪元素实现悬停颜色渐变的过渡效果 */
 .header a::before {
     content: "";
     position: absolute;
@@ -39,7 +40,7 @@
     font-size: 18px;
 }
 
-.header a .content {
+.header a .literal {
     font-family: "PingFang SC", serif;
     font-size: 18px;
     font-style: normal;

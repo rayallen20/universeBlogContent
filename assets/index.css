@@ -2,6 +2,19 @@
     box-sizing: border-box;
 }
 
+:root {
+    /* 每层缩进步长 */
+    --tree-indent: 21px;
+    /* 每层ul起始缩进 现在的设计中没有这个缩进 本变量属于便于未来扩展的设计 */
+    --tree-base: 0px;
+    /* 线条颜色 */
+    --tree-line-color: #2cfbff;
+    /* 线条宽度 */
+    --tree-line-width: 1px;
+    /* li中每个row的高度(其实就是折叠时的li高度) row的上下内边距均为12px,字体大小18px,共计42px */
+    --row-height: 42px;
+}
+
 body {
     overflow: hidden;
     display: flex;
@@ -12,44 +25,3 @@ body {
     background: url('./img/background.png') lightgray 50% / cover no-repeat;
 }
 
-.contentWrap {
-    flex: 1 1 auto;
-    /* 防止contentWrap把滚动传给body */
-    overflow: hidden;
-    display: flex;
-    justify-content: space-between;
-    column-gap: 31px;
-    padding: 29px 100px 49px;
-    /*background: darkkhaki;*/
-}
-
-.contentWrap .catalogue, .contentWrap .content {
-    height: 100%;
-    min-height: 0;
-    overflow: auto;
-    border-radius: 20px;
-    border: 1px solid #21AAFF;
-    /*background: linear-gradient(90deg, rgba(0, 0, 0, 0.30) 0.23%, rgba(0, 0, 0, 0.30) 99.78%);*/
-}
-
-.contentWrap .catalogue {
-    width: 60%;
-    /*background: darkgrey;*/
-    padding: 24px 0 0 24px;
-}
-
-.contentWrap .catalogue h3 {
-    margin-bottom: 28px;
-    color: #2CFBFF;
-    font-family: "Source Han Serif CN", serif;
-    font-size: 38px;
-    font-style: normal;
-    font-weight: 900;
-    line-height: 38px;
-    letter-spacing: 2px;
-}
-
-.contentWrap .content {
-    width: calc(100% - 60% - 31px);
-    background: darkcyan;
-}

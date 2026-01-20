@@ -1,16 +1,38 @@
-/* 每一层的children相对上一层向右移动21px */
-.tree ul {
-    padding-left: 21px;
-}
-
 /* 每个节点的第1行 展示name的那一行 */
 .node > .row {
+    /*
+        Tips: 这个定位有2个作用:
+
+        1. 用于控制渐变层(而非是row这个盒子)
+        2. 让row可以作为定位参照
+    */
+    position: relative;
+    width: 100%;
     padding: 12px 0;
-    /*line-height: 20px;*/
     user-select: none;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+/* Tips: 这里由于鼠标悬停时无法过渡background属性,所以使用伪元素实现悬停颜色渐变的过渡效果 */
+.node > .row::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(32, 198, 216, 0.10) 0.23%, rgba(32, 198, 216, 0.10) 99.78%);
+    opacity: 0;
+    transition: opacity 0.8s;
+    pointer-events: none;
+}
+
+.node > .row:hover::before {
+    opacity: 1;
+}
+
+/* 确保文字在渐变层上 */
+.node > .row > * {
+    position: relative;
+    z-index: 1;
 }
 
 /*
@@ -138,4 +160,46 @@ case2. depth > 0时的node
     .node_folder.animating > ul {
         transition: none !important;
     }
+}
+
+/* 让li能作为定位参照 */
+.tree li {
+    position: relative;
+}
+
+/* 只对非root节点画线 */
+.tree ul.children > li::before, .tree ul.children > li::after {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+}
+
+/* 计算竖线的x坐标 */
+.tree ul.children > li {
+    /* 竖线的x坐标 = 起始缩进 + (深度 * 缩进步长) - 缩进步长 / 2 */
+    /* Tips: 这里的深度是JS写到每个li元素中的变量 */
+    --branch-x: calc(var(--tree-base) + (var(--depth) * var(--tree-indent)) - var(--tree-indent) / 2);
+}
+
+/* 绘制横线: 从竖线拐到每个li节点 */
+.tree ul.children > li::before {
+    left: var(--branch-x);
+    top: calc(var(--row-height) / 2);
+    width: calc(var(--tree-indent) / 2);
+    border-top: var(--tree-line-width) solid var(--tree-line-color);
+}
+
+/* 绘制竖线 */
+.tree ul.children > li::after {
+    left: var(--branch-x);
+    /* 竖线贯穿整个li */
+    top: 0;
+    bottom: 0;
+    border-left: var(--tree-line-width) solid var(--tree-line-color);
+}
+
+/* 最后一个li: 竖线只到自身中线位置处停止 实现`└`效果 */
+.tree ul.children > li:last-child::after {
+    bottom: auto;
+    height: calc(var(--row-height) / 2);
 }
