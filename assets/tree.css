@@ -64,6 +64,7 @@ case1. depth = 0时的node
     font-weight: 700;
     line-height: 24px;
     letter-spacing: 1px;
+    transition: color 0.8s ease;
 }
 
 /*
@@ -116,6 +117,12 @@ case2. depth > 0时的node
     font-weight: 500;
     line-height: 18px;
     letter-spacing: 1px;
+    transition: color 0.8s ease;
+}
+
+/* 悬停当前row时 改变当前row里的文字颜色 */
+.row:hover > .literal {
+    color: #2CFBFF;
 }
 
 /*

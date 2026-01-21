@@ -8,12 +8,12 @@
 }
 
 .header a {
+    position: relative;
+    background: transparent;
     display: flex;
     align-items: center;
     padding-left: 30px;
     height: 100%;
-    position: relative;
-    background: transparent;
     transition: all 0.4s;
 }
 

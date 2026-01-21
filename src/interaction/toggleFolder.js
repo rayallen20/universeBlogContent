@@ -5,7 +5,6 @@ import {collapsedIdSet} from "../structure/tree";
  * @param {HTMLLIElement} liElement - 表示被点击节点的li元素
  * */
 export function toggleFolder(liElement) {
-
     // 只处理文件夹节点
     if (!liElement.classList.contains('node_folder')) {
         return

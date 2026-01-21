@@ -1,7 +1,11 @@
 .catalogue {
-    width: 60%;
     /*background: darkgrey;*/
     padding: 24px 0 0 24px;
+}
+
+.catalogueActive {
+    width: 70%;
+    opacity: 1;
 }
 
 .catalogue h3 {

@@ -1,14 +1,16 @@
 export const tree = {
     id: 1,
     type: 'folder',
-    name: '文件夹名称',
-    title: '根文件夹的标题',
+    name: '根文件夹名称',
     intro: '根文件夹的简介',
+    createdAt: '2025-12-31',
     children: [
         {
             id: 2,
             type: 'folder',
             name: '子文件夹A名称',
+            intro: '子文件夹A的简介',
+            createdAt: '2026-01-01',
             children: [
                 {
                     id: 3,
@@ -26,11 +28,15 @@ export const tree = {
             id: 5,
             type: 'folder',
             name: '子文件夹B名称',
+            intro: '子文件夹B的简介',
+            createdAt: '2026-01-02',
             children: [
                 {
                     id: 6,
                     type: 'folder',
                     name: '子文件夹B-1名称',
+                    intro: '子文件夹B-1的简介',
+                    createdAt: '2026-01-03',
                     children: [
                         {
                             id: 7,
@@ -48,6 +54,8 @@ export const tree = {
                     id: 9,
                     type: 'folder',
                     name: '子文件夹B-2名称',
+                    intro: '子文件夹B-2的简介',
+                    createdAt: '2026-01-04',
                     children: [
                         {
                             id: 10,
@@ -211,30 +219,35 @@ function createLiElement(node, depth) {
  * 本函数以DFS方式查找指定ID的节点及其路径
  * @param {Object} node - 当前节点对象
  * @param {number} targetId - 目标节点ID
- * @param {Array<string>} nameStack - 路径数组 该数组中的每个元素表示路径上的节点名称(即node.name)
- * @returns {{node: Object|null, path: string}} - 包含找到的节点对象和路径数组的对象 若未找到节点则node为null且path为空数组
+ * @param {Array<Object>} ancestorStack - 祖先节点栈(不包含当前节点)
+ * @returns {{node: Object|null, path: Array<Object>}} - 包含找到的节点对象和路径数组的对象 若未找到节点则node为null且path为空数组
  * */
-export function dfsFindNodeWithPath(node, targetId, nameStack) {
-    const nextStack = nameStack.concat(node.name)
-
+export function dfsFindNodeWithPath(node, targetId, ancestorStack) {
     if (node.id === targetId) {
         return {
             node: node,
-            path: nextStack.join('/')
+            path: ancestorStack.slice()
         }
     }
 
     if (node.type === 'folder' && Array.isArray(node.children)) {
+        // 进入子节点前将当前节点入栈
+        ancestorStack.push(node)
+
         for (const child of node.children) {
-            const hit = dfsFindNodeWithPath(child, targetId, nextStack)
+            const hit = dfsFindNodeWithPath(child, targetId, ancestorStack)
             if (hit.node !== null) {
+                ancestorStack.pop()
                 return hit
             }
         }
+
+        // 所有子节点都没命中 回溯时将当前节点出栈
+        ancestorStack.pop()
     }
 
     return {
         node: null,
-        path: '',
+        path: [],
     }
 }
