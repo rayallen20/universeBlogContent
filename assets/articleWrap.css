@@ -9,7 +9,7 @@
     /*background: darkkhaki;*/
 }
 
-/* 设置滚动条 防止整个页面出现滚动条 */
+/* 设置溢出处理 防止整个页面出现滚动条 */
 .articleWrap .catalogue, .articleWrap .article {
     height: 100%;
     min-height: 0;

@@ -16,11 +16,13 @@ export const tree = {
                     id: 3,
                     type: 'file',
                     name: '文件A-1名称',
+                    createdAt: '2026-01-05',
                 },
                 {
                     id: 4,
                     type: 'file',
                     name: '文件A-2名称',
+                    createdAt: '2026-01-06',
                 },
             ]
         },
@@ -42,11 +44,13 @@ export const tree = {
                             id: 7,
                             type: 'file',
                             name: '文件B-1-1名称',
+                            createdAt: '2026-01-07',
                         },
                         {
                             id: 8,
                             type: 'file',
                             name: '文件B-1-2名称',
+                            createdAt: '2026-01-08',
                         },
                     ],
                 },
@@ -61,11 +65,166 @@ export const tree = {
                             id: 10,
                             type: 'file',
                             name: '文件B-2-1名称',
+                            createdAt: '2026-01-09',
                         },
                         {
                             id: 11,
                             type: 'file',
                             name: '文件B-2-2名称',
+                            createdAt: '2026-01-10',
+                        },
+                    ],
+                },
+            ],
+        },
+        {
+            id: 12,
+            type: 'folder',
+            name: '子文件夹C名称',
+            intro: '子文件夹C的简介',
+            createdAt: '2026-01-11',
+            children: [
+                {
+                    id: 13,
+                    type: 'folder',
+                    name: '子文件夹C-1名称',
+                    intro: '子文件夹C-1的简介',
+                    createdAt: '2026-01-12',
+                    children: [
+                        {
+                            id: 14,
+                            type: 'file',
+                            name: '文件C-1-1名称',
+                            createdAt: '2026-01-13',
+                        },
+                        {
+                            id: 15,
+                            type: 'file',
+                            name: '文件C-1-2名称',
+                            createdAt: '2026-01-14',
+                        },
+                    ],
+                },
+                {
+                    id: 16,
+                    type: 'folder',
+                    name: '子文件夹C-2名称',
+                    intro: '子文件夹C-2的简介',
+                    createdAt: '2026-01-15',
+                    children: [
+                        {
+                            id: 17,
+                            type: 'file',
+                            name: '文件C-2-1名称',
+                            createdAt: '2026-01-16',
+                        },
+                        {
+                            id: 18,
+                            type: 'file',
+                            name: '文件C-2-2名称',
+                            createdAt: '2026-01-17',
+                        },
+                    ],
+                },
+            ],
+        },
+        {
+            id: 19,
+            type: 'folder',
+            name: '子文件夹D名称',
+            intro: '子文件夹D的简介',
+            createdAt: '2026-01-11',
+            children: [
+                {
+                    id: 20,
+                    type: 'folder',
+                    name: '子文件夹D-1名称',
+                    intro: '子文件夹D-1的简介',
+                    createdAt: '2026-01-12',
+                    children: [
+                        {
+                            id: 21,
+                            type: 'file',
+                            name: '文件D-1-1名称',
+                            createdAt: '2026-01-13',
+                        },
+                        {
+                            id: 22,
+                            type: 'file',
+                            name: '文件D-1-2名称',
+                            createdAt: '2026-01-14',
+                        },
+                    ],
+                },
+                {
+                    id: 23,
+                    type: 'folder',
+                    name: '子文件夹D-2名称',
+                    intro: '子文件夹D-2的简介',
+                    createdAt: '2026-01-15',
+                    children: [
+                        {
+                            id: 24,
+                            type: 'file',
+                            name: '文件D-2-1名称',
+                            createdAt: '2026-01-16',
+                        },
+                        {
+                            id: 25,
+                            type: 'file',
+                            name: '文件D-2-2名称',
+                            createdAt: '2026-01-17',
+                        },
+                    ],
+                },
+            ],
+        },
+        {
+            id: 26,
+            type: 'folder',
+            name: '子文件夹E名称',
+            intro: '子文件夹E的简介',
+            createdAt: '2026-01-11',
+            children: [
+                {
+                    id: 27,
+                    type: 'folder',
+                    name: '子文件夹E-1名称',
+                    intro: '子文件夹E-1的简介',
+                    createdAt: '2026-01-12',
+                    children: [
+                        {
+                            id: 28,
+                            type: 'file',
+                            name: '文件E-1-1名称',
+                            createdAt: '2026-01-13',
+                        },
+                        {
+                            id: 29,
+                            type: 'file',
+                            name: '文件E-1-2名称',
+                            createdAt: '2026-01-14',
+                        },
+                    ],
+                },
+                {
+                    id: 30,
+                    type: 'folder',
+                    name: '子文件夹E-2名称',
+                    intro: '子文件夹E-2的简介',
+                    createdAt: '2026-01-15',
+                    children: [
+                        {
+                            id: 31,
+                            type: 'file',
+                            name: '文件E-2-1名称',
+                            createdAt: '2026-01-16',
+                        },
+                        {
+                            id: 32,
+                            type: 'file',
+                            name: '文件E-2-2名称',
+                            createdAt: '2026-01-17',
                         },
                     ],
                 },
@@ -250,4 +409,41 @@ export function dfsFindNodeWithPath(node, targetId, ancestorStack) {
         node: null,
         path: [],
     }
+}
+
+/**
+ * 本函数以DFS方式查找指定非叶节点下的第一个叶节点
+ * @param {Object} root - 根节点对象
+ * @param {number} nonleafId - 非叶节点ID
+ * @returns {Object|null} - 找到的第1个叶子节点对象 若未找到则返回null
+ * */
+export function dfsFindFirstLeafNode(root, nonleafId) {
+    const hit = dfsFindNodeWithPath(root, nonleafId, [])
+    if (hit.node === null || hit.node.type !== 'folder' || !Array.isArray(hit.node.children)) {
+        return null
+    }
+
+    return dfsFirstLeaf(hit.node)
+}
+
+/**
+ * 本函数以DFS方式查找指定节点下的第一个叶子节点
+ * @param {Object} node - 当前节点对象
+ * @returns {Object|null} - 找到的第1个叶子节点对象 若未找到则返回null
+ * */
+function dfsFirstLeaf(node) {
+    if (node.type === 'file') {
+        return node
+    }
+
+    if (node.type === 'folder' && Array.isArray(node.children)) {
+        for (const child of node.children) {
+            const found = dfsFirstLeaf(child)
+            if (found !== null) {
+                return found
+            }
+        }
+    }
+
+    return null
 }

@@ -1,11 +1,20 @@
 .catalogue {
     /*background: darkgrey;*/
     padding: 24px 0 0 24px;
+    transition:
+        width 0.8s ease-in-out,
+        opacity 0.8s ease-in-out;
 }
 
 .catalogueActive {
     width: 70%;
     opacity: 1;
+}
+
+.catalogueInactive {
+    width: calc(100% - 70% - 31px);
+    opacity: 0.3;
+    pointer-events: none;
 }
 
 .catalogue h3 {

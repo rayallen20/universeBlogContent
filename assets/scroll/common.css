@@ -1,7 +1,9 @@
 .articleWrap .catalogue .simplebar-track.simplebar-vertical,
 .articleWrap .article .simplebar-track.simplebar-vertical,
+.articleWrap .article .articleBody .simplebar-track.simplebar-vertical,
 .articleWrap .catalogue .simplebar-track.simplebar-horizontal,
-.articleWrap .article .simplebar-track.simplebar-horizontal {
+.articleWrap .article .simplebar-track.simplebar-horizontal,
+.articleWrap .article .articleBody .simplebar-track.simplebar-horizontal {
     /* 滚动条背景色 */
     background: rgba(33, 170, 255, 0.10);
     /* 滚动条圆角(Tips: 这里设置的是滚动条的边框,不是滑块的) */
@@ -11,8 +13,10 @@
 /* 设置滑块样式 */
 .articleWrap .catalogue .simplebar-track.simplebar-vertical .simplebar-scrollbar::before,
 .articleWrap .article .simplebar-track.simplebar-vertical .simplebar-scrollbar::before,
+.articleWrap .article .articleBody .simplebar-track.simplebar-vertical .simplebar-scrollbar::before,
 .articleWrap .catalogue .simplebar-track.simplebar-horizontal .simplebar-scrollbar::before,
-.articleWrap .article .simplebar-track.simplebar-horizontal .simplebar-scrollbar::before {
+.articleWrap .article .simplebar-track.simplebar-horizontal .simplebar-scrollbar::before,
+.articleWrap .article .articleBody .simplebar-track.simplebar-horizontal .simplebar-scrollbar::before {
     content: "";
     position: absolute;
     /*
@@ -29,7 +33,9 @@
 /* 设置滑块悬停时发亮 */
 .articleWrap .catalogue .simplebar-track.simplebar-vertical .simplebar-scrollbar:hover::before,
 .articleWrap .article .simplebar-track.simplebar-vertical .simplebar-scrollbar:hover::before,
+.articleWrap .article .articleBody .simplebar-track.simplebar-vertical .simplebar-scrollbar:hover::before,
 .articleWrap .catalogue .simplebar-track.simplebar-horizontal .simplebar-scrollbar:hover::before,
-.articleWrap .article .simplebar-track.simplebar-horizontal .simplebar-scrollbar:hover::before {
+.articleWrap .article .simplebar-track.simplebar-horizontal .simplebar-scrollbar:hover::before,
+.articleWrap .article .articleBody .simplebar-track.simplebar-horizontal .simplebar-scrollbar:hover::before {
     filter: brightness(1.05);
 }
