@@ -260,6 +260,8 @@ function changeActiveNode(targetId) {
         state.phase = 'renderLeaf'
     }
 
+    console.log(state.phase)
+
     renderPageTitle()
     renderCatalogue()
     renderArticle()
@@ -302,20 +304,74 @@ function openArticle(event) {
 /**
  * 本函数用于处理专注目录按钮的点击事件
  * 专注目录的逻辑:
- * TODO: 这里的逻辑不太对 可能得靠改html结构或者加新的状态才能实现UI设计稿中的效果
- * 1. 切换渲染状态到当前非叶节点
+ * 1. 调整目录区域和文章区域的宽窄/透明度/交互性
+ * 2. 在文章区域增加蒙版
+ * 3. 修改底部按钮的样式和监听器
  * @param {MouseEvent} event - 点击事件对象
  * */
 function concentrateCatalogue(event) {
-    // 切换渲染状态到当前非叶节点
-    const focusFolderId = state.rootToActivePath.length
-        ? state.rootToActivePath[state.rootToActivePath.length - 1].id
-        : null
-    if (focusFolderId === null) {
-        return
-    }
+    // 调整宽窄
+    catalogueElement.style.width = '70%'
+    catalogueElement.style.opacity = '1'
+    catalogueElement.style.pointerEvents = 'auto'
+    articleElement.style.width = 'calc(100% - 70% - 31px)'
+    articleElement.style.pointerEvents = 'none'
 
-    changeActiveNode(focusFolderId)
+    // 增加蒙版
+    articleElement.classList.add('hasMask')
+
+    // 移除按钮的当前样式和专注目录的监听器
+    const bottomButton = articleElement.querySelector('.bottomButton')
+    bottomButton.classList.remove('bottomButton')
+    bottomButton.removeEventListener('click', concentrateCatalogue)
+
+    // 修改样式
+    bottomButton.textContent = '开启文章'
+    bottomButton.classList.add('hasMaskButton')
+
+    // 创建事件监听
+    bottomButton.addEventListener('click', resetToArticleActive)
+}
+
+/**
+ * 本函数用于恢复文章激活状态的点击事件
+ * 恢复文章激活状态的逻辑:
+ * 1. 恢复目录区域和文章区域的宽窄/透明度/交互性
+ * 2. 移除文章区域的蒙版
+ * 3. 恢复底部按钮的样式和监听器
+ * @param {MouseEvent} event - 点击事件对象
+ * */
+function resetToArticleActive(event) {
+    // 恢复宽窄
+    catalogueElement.style.width = '30%'
+    catalogueElement.style.opacity = '0.3'
+    catalogueElement.style.pointerEvents = 'none'
+    articleElement.style.width = 'calc(100% - 30% - 31px)'
+    articleElement.style.pointerEvents = 'auto'
+
+    // 移除蒙版
+    articleElement.classList.remove('hasMask')
+
+    // 恢复按钮的样式和监听器
+    const hasMaskButton = articleElement.querySelector('.hasMaskButton')
+    hasMaskButton.classList.remove('hasMaskButton')
+    hasMaskButton.removeEventListener('click', resetToArticleActive)
+    hasMaskButton.textContent = ''
+    hasMaskButton.classList.add('bottomButton')
+
+    // 左侧字体图标
+    const buttonIconElement = document.createElement('i')
+    buttonIconElement.classList.add('iconfont', 'icon-mulu')
+    hasMaskButton.appendChild(buttonIconElement)
+
+    // 右侧文字
+    const buttonLiteralElement = document.createElement('span')
+    buttonLiteralElement.classList.add('literal')
+    buttonLiteralElement.textContent = '专注目录'
+    hasMaskButton.appendChild(buttonLiteralElement)
+
+    // 添加监听器
+    hasMaskButton.addEventListener('click', concentrateCatalogue)
 }
 
 /**
@@ -356,5 +412,9 @@ function clickHandle(event) {
 
     // 修改当前渲染状态
     const targetId = Number(liElement.dataset.id)
+    // Tips: 这里由于专注目录/恢复文章激活状态这2个操作设置的是行内样式
+    // 会覆盖掉原有的样式 因此在切换节点时需要清除行内样式
+    articleElement.style = ''
+    catalogueElement.style = ''
     changeActiveNode(targetId)
 }

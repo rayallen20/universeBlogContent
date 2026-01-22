@@ -9,6 +9,7 @@
 .catalogueActive {
     width: 70%;
     opacity: 1;
+    pointer-events: auto;
 }
 
 .catalogueInactive {

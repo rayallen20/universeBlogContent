@@ -42,6 +42,7 @@
 
 /* 滚动区域 */
 .articleActive .articleBody {
+    position: relative;
     height: 100%;
     overflow: auto;
     /* 给底部留空间，避免内容被悬浮按钮挡住 */
@@ -186,3 +187,62 @@
     flex: 0 0 auto;
 }
 /* 文章区域非激活状态样式结束 */
+
+/* 蒙版状态样式开始 */
+/* 默认不显示蒙版(避免每次都渲染) */
+.articleActive .articleBody::after{
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    background: linear-gradient(
+            90deg,
+            rgba(0, 0, 0, 0.30) 0.23%,
+            rgba(0, 0, 0, 0.30) 99.78%
+    );
+}
+
+/* 开关类: 需要蒙版时加上给.articleActive 加上.hasMask即可 */
+.articleActive.hasMask .articleBody::after{
+    opacity: 1;
+}
+
+.hasMaskButton {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 107px;
+    color: #2CFBFF;
+    border-radius: 0 0 20px 20px;
+    background: linear-gradient(0deg, rgba(44, 251, 255, 0.20) 0%, rgba(44, 251, 255, 0) 100%);
+    font-family: "Source Han Serif CN", serif;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 107px;
+    letter-spacing: 2px;
+    pointer-events: auto;
+}
+
+.hasMaskButton::before{
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(0deg, rgba(44, 251, 255, 0.40) 0%, rgba(44, 251, 255, 0.00) 100%);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+}
+
+.hasMaskButton:hover::before{
+    opacity: 1;
+}
+/* 蒙版状态样式结束 */
